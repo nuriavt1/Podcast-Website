@@ -1,6 +1,6 @@
 import './App.css';
 import logo from './logoGamesList.svg';
-import GamesList from './gamesList';
+import PodcastList from './podcastList';
 
 
 function App() {
@@ -11,10 +11,15 @@ function App() {
       <header>
         <img src={logo} alt="logo de GamesList" />
       </header>
-      <GamesList />
+
+<main>
+<PodcastList />
+</main>
+
+      
     
     <footer>
-      <p>Copyright © 2024 by Núria Vaquero Tell All Rights Reserved.</p>
+      <p>© 2024 Next-Cast All rights reserved.</p>
     </footer>
 
     </div>
