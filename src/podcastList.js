@@ -12,8 +12,6 @@ import Card from './card';
 function PodcastList() {
 
     const [podcasts, setCast] = useState([])
-
-
     fetch(`https://api.spotify.com/v1/search?q=podcast&type=show`)
     .then(response => {
         if (!response.ok) {
@@ -23,8 +21,8 @@ function PodcastList() {
     })
     .then(data => setCast(data.results)) // Acceder a 'results' en la respuesta de la API
     .catch(err => {
-        console.error("Error al obtener datos de juegos:", err);
-        alert("Error al obtener datos de juegos.");
+        console.error("Error al obtener datos de podcasts:", err);
+        alert("Error al obtener datos de podcasts.");
     });
 
 
