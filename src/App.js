@@ -3,7 +3,7 @@ import logo from './nextCastLogo.svg';
 import PodcastList from './podcastList';
 
 function App() {
-const client_id = 'd21f9fa9e9834547a686c4595b539595';
+/*const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
 
 async function getToken() {
@@ -18,12 +18,13 @@ async function getToken() {
       //'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')),
     },
   });
-
-  return await response.json();
-}
+  let a=await response.json()
+  console.log(a);
+  return a;
+}*/
 
 //EJEMPLO OBTENIENDO TRACK
-async function getTrackInfo(access_token) {
+/*async function getTrackInfo(access_token) {
   const response = await fetch("https://api.spotify.com/v1/tracks/4cOdK2wGLETKBW3PvgPWqT", {
     method: 'GET',
     headers: { 'Authorization': 'Bearer ' + access_token },
@@ -36,11 +37,11 @@ getToken().then(response => {
   getTrackInfo(response.access_token).then(profile => {
     console.log(profile)
   })
-});
+});*/
 //
 
 //PARA OBTENER SHOWS DE COMEDIA EJEMPLO
-async function getPodcastInfo(access_token) {
+/*async function getPodcastInfo(access_token) {
   const response = await fetch("https://api.spotify.com/v1/search?offset=0&limit=20&query=comedy&type=show&locale=es-ES,es;q%3D0.9", {
     method: 'GET',
     headers: { 'Authorization': 'Bearer ' + access_token },
@@ -53,7 +54,7 @@ getToken().then(response => {
   getPodcastInfo(response.access_token).then(profile => {
     console.log(profile)
   })
-});
+});*/
 
 //
 
@@ -65,7 +66,7 @@ getToken().then(response => {
       </header>
 
 <main>
-<PodcastList />
+<PodcastList/>
 </main>
 
       
