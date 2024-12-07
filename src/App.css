@@ -1,17 +1,7 @@
 .App {
   text-align: center;
-  font-family: "Poppins", sans-serif;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  font-family: "Inter Tight";
+  background: #00DDB5;
 }
 
 .App-header {
@@ -51,29 +41,22 @@ ul{
 }
 
 .games-item{
- /* height: 370.40px;*/
- height: fit-content;
- padding-bottom: 20px;
-  width: 404px;
-  border-width: 1px;
-  border-style: solid; /* Añadir el estilo de borde */
-  border-color: #003BFF;
-  border-radius: 20px;
-  background-color: white;
-  color: #003BFF;
   display: flex;
-  justify-content: flex-start;
   flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   gap: 8px;
+  width: 200px;
 }
 
 .games-item img {
   /*width: 95%;*/
-  margin-top: 12px;
+ /* margin-top: 12px;
   margin-left: 12px;
-  margin-right: 12px;
-  height: 257.48px;
-  border-radius: 20px;
+  margin-right: 12px;*/
+  width: 200px;
+height: 203px;
+  border-radius: 4px;
   object-fit: cover;
 }
 
@@ -82,22 +65,27 @@ ul{
 }
 
 .games-item h2{
-  font-size: 20px;
-  font-weight: 700px;
-  margin: 0px 0px 0px 20px;
-  width: fit-content;
+margin: 0px;
+  width: 100%;
   text-align: left;
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .games-item p{
-  font-size: 14px;
-  font-weight: 300;
-  margin: 0px 0px 0px 20px;
-  width: fit-content;
+  margin: 0px;
+  color: #E44C10;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
 footer{
-  background-color: #003BFF;
+  background-color: #000000;
   height: 122px;
   color: white;
   font-size: 16px;

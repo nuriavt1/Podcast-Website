@@ -1,6 +1,7 @@
 import './App.css';
 import logo from './nextCastLogo.svg';
 import PodcastList from './podcastList';
+import Hero from './hero';
 
 function App() {
 /*const client_id = 'd21f9fa9e9834547a686c4595b539595';
