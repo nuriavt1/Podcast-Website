@@ -20,12 +20,17 @@ header {
   /*border-bottom: 1px solid #003BFF;*/
   display: flex;
   align-items: center;
+  position: fixed;
 }
 
 header img {
   width: 108px;
   /*height: 48px;*/
   margin-left: 100px;
+}
+
+header li {
+  list-style: none;
 }
 
 .hero {
@@ -86,6 +91,74 @@ header img {
   /* 100% */
 }
 
+
+/*PANTALLA SELECCIONAR CATEGORIAS*/
+.topic-selector{
+  display: flex;
+  height: 647px;
+  justify-content: center;
+}
+
+.topic-selector h1{
+font-size: 40px;
+font-style: normal;
+font-weight: 500;
+line-height: 40px; /* 100% */
+text-align: left;
+}
+
+.topic-selector h2{
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 24px; /* 150% */
+text-align: left;
+}
+
+/*Select Category Button state*/
+
+.categories-box{
+  display: flex;
+  width: 443px;
+  align-items: center;
+  align-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.category-button {
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 20px;
+
+  display: flex;
+  padding: 8px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #000000;
+}
+
+.category-button.selected {
+  background-color: #000000;
+  color: #fff;
+}
+
+.category-button.unselected {
+  background-color: #f1f1f1;
+  color: #000;
+}
+
+.category-button p {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  margin: 0px;
+}
+
+
 /**/
 
 section {
@@ -104,7 +177,7 @@ ul {
 .games-item {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /*justify-content: center;*/
   align-items: flex-start;
   gap: 8px;
   width: 200px;

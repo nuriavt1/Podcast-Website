@@ -3,6 +3,7 @@ import logo from './nextCastLogo.svg';
 import PodcastList from './podcastList';
 import Hero from './hero';
 import Header from './header';
+import TopicsSelector from './topicsSelector';
 
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
 
       <main>
         <Hero />
+        <TopicsSelector />
         <PodcastList />
       </main>
 
