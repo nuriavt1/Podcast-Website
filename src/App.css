@@ -34,7 +34,7 @@ header li {
 }
 
 .hero {
-  height: 85vh;
+  height: 100vh;
   display: flex;
   padding: 0px 91px;
   justify-content: center;
@@ -95,8 +95,14 @@ header li {
 /*PANTALLA SELECCIONAR CATEGORIAS*/
 .topic-selector{
   display: flex;
-  height: 647px;
+  height: 100vh;
   justify-content: center;
+  align-items: center;
+}
+
+.img-screen{
+width: 312px;
+height: 347.08px;
 }
 
 .topic-selector h1{

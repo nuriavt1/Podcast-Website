@@ -1,17 +1,24 @@
 import React from 'react';
 import logo from './nextCastLogo.svg';
+import {Link} from 'react-router-dom'
 
 function Header() {
   return (
-    <header>
-      <img src={logo} alt="logo de GamesList" />
+  
+      <header>
 
-<ul>
-    <li><a>Podcasts</a></li>
-    <li><a>AudioBooks</a></li>
-</ul>
+        <Link to="/">
+        <img src={logo} alt="logo Next-Cast" />
+        </Link>
+       
+        <ul>
+          <li><Link to="/podcasts">Podcasts</Link></li>
+          <li><Link to="/audiobooks">AudioBooks</Link></li>
+        </ul>
 
-    </header>
+
+
+      </header>
   );
 }
 

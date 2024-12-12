@@ -24,7 +24,7 @@ function CategoryButton({ category, isSelected, toggleSelection }) {
       className={`category-button ${isSelected ? "selected" : "unselected"}`} // Clases dinámicas
     >
      
-      <img
+      <img 
         src={isSelected ? checkIcon : plusIcon} // Ícono dinámico
         alt={isSelected ? "Selected" : "Unselected"}
       />
@@ -69,7 +69,7 @@ function TopicsSelector() {
         </div>
       </div>
 
-      <img src={topicImg} alt="Topic" style={{ marginTop: "20px" }} />
+      <img className="img-screen" src={topicImg} alt="Topic"/>
     </div>
   );
 }
