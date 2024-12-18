@@ -5,6 +5,7 @@ import Hero from './hero';
 import Header from './header';
 import TopicsSelector from './topicsSelector';
 import PodcastDetail from './podcastDetail';
+import StartPodcast from './start-podcasts';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 
@@ -83,6 +84,7 @@ function App() {
           {/*<Route path="/audiobooks" element={<AudioBooksList />} />*/}
           <Route path="/topics-selector" element={<TopicsSelector />} />
           <Route path="/podcast-detail" element={<PodcastDetail />} />
+          <Route path="/start-podcasts" element={<StartPodcast />} />
         </Routes>
       </Router>
 

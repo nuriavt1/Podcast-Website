@@ -3,7 +3,9 @@ import topicImg from "./topicImg.svg";
 import arrowRight from "./arrowRight.svg";
 import plusIcon from "./plusIcon.svg";
 import checkIcon from "./checkIcon.svg";
+import { useNavigate } from "react-router-dom";
 
+// Lista de categorías
 const Categories = [
   "Comedy",
   "Mistery",
@@ -16,34 +18,50 @@ const Categories = [
   "Kids"
 ];
 
-// Componente para mostrar botones de categorías
+// Botón de categoría
 function CategoryButton({ category, isSelected, toggleSelection }) {
   return (
     <div
-      onClick={toggleSelection} // Cambia el estado al hacer clic
-      className={`category-button ${isSelected ? "selected" : "unselected"}`} // Clases dinámicas
+      onClick={toggleSelection}
+      className={`category-button ${isSelected ? "selected" : "unselected"}`}
     >
-     
-      <img 
-        src={isSelected ? checkIcon : plusIcon} // Ícono dinámico
-        alt={isSelected ? "Selected" : "Unselected"}
-      />
-
-<p>{category}</p>
+      <img src={isSelected ? checkIcon : plusIcon} alt="Icon" />
+      <p>{category}</p>
     </div>
   );
 }
 
-
-// Componente principal para manejar las categorías
+// Componente principal
 function TopicsSelector() {
-  const [selectedCategories, setSelectedCategories] = useState({}); // Guarda el estado de cada categoría
+  const [selectedCategories, setSelectedCategories] = useState([]); // Inicializado como array
+  const navigate = useNavigate();
 
+  // Guardar categoría seleccionada
+  const saveCategory = (category) => {
+    setSelectedCategories((prevState) =>
+      prevState.includes(category) ? prevState : [...prevState, category]
+    );
+  };
+
+  // Eliminar categoría seleccionada
+  const deleteCategory = (category) => {
+    setSelectedCategories((prevState) =>
+      prevState.filter((item) => item !== category)
+    );
+  };
+
+  // Alternar selección de categorías
   const toggleSelection = (category) => {
-    setSelectedCategories((prevState) => ({
-      ...prevState,
-      [category]: !prevState[category], // Alterna el estado de la categoría
-    }));
+    if (selectedCategories.includes(category)) {
+      deleteCategory(category);
+    } else {
+      saveCategory(category);
+    }
+  };
+
+  // Manejar el clic en "Next"
+  const handleNext = () => {
+    navigate("/start-podcasts", { state: { selectedCategories } }); // Enviar categorías
   };
 
   return (
@@ -57,21 +75,26 @@ function TopicsSelector() {
             <CategoryButton
               key={category}
               category={category}
-              isSelected={!!selectedCategories[category]} // Estado de selección
-              toggleSelection={() => toggleSelection(category)} // Cambia el estado
+              isSelected={selectedCategories.includes(category)} // Ahora es un array
+              toggleSelection={() => toggleSelection(category)}
             />
           ))}
         </div>
 
-        <div className="boton" style={{ marginTop: "20px", cursor: "pointer" }}>
+        <div
+          className="boton"
+          onClick={handleNext}
+          style={{ marginTop: "20px", cursor: "pointer" }}
+        >
           <p>Next</p>
           <img src={arrowRight} alt="Arrow Right" />
         </div>
       </div>
 
-      <img className="img-screen" src={topicImg} alt="Topic"/>
+      <img className="img-screen" src={topicImg} alt="Topic" />
     </div>
   );
 }
 
 export default TopicsSelector;
+
