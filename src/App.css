@@ -91,6 +91,12 @@ header li {
   /* 100% */
 }
 
+.home section{
+  background: #000;
+  color: white;
+  height: fit-content;
+}
+
 
 /*PANTALLA SELECCIONAR CATEGORIAS*/
 .topic-selector{
@@ -169,7 +175,7 @@ text-align: left;
 
 section {
   background-color: #F9F9F9;
-  min-height: 90vh;
+ /* min-height: 90vh;*/
   padding-bottom: 50px;
 }
 
