@@ -7,6 +7,7 @@ import TopicsSelector from './topicsSelector';
 import PodcastDetail from './podcastDetail';
 import StartPodcast from './start-podcasts';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 function App() {
@@ -83,7 +84,7 @@ function App() {
           <Route path="/podcasts" element={<PodcastList />} />
           {/*<Route path="/audiobooks" element={<AudioBooksList />} />*/}
           <Route path="/topics-selector" element={<TopicsSelector />} />
-          <Route path="/podcast-detail" element={<PodcastDetail />} />
+          <Route path="/podcast-detail/:id" element={<PodcastDetail />} />
           <Route path="/start-podcasts" element={<StartPodcast />} />
         </Routes>
       </Router>

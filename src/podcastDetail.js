@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
 
+// Función para obtener el token de Spotify
 async function getToken() {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
@@ -14,21 +16,24 @@ async function getToken() {
       Authorization: `Basic ${btoa(`${client_id}:${client_secret}`)}`,
     },
   });
+
   if (!response.ok) {
     throw new Error('Error al obtener el token');
   }
+
   const data = await response.json();
   return data.access_token;
 }
 
-function PodcastDetail({ id }) {
+const PodcastDetail = () => {
+  const { id } = useParams(); // Obtener el ID de la URL
   const [details, setDetails] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true; // Para evitar actualizaciones de estado si el componente se desmonta
 
-    async function fetchDetails() {
+    async function fetchPodcastDetails() {
       try {
         const token = await getToken();
         const response = await fetch(`https://api.spotify.com/v1/shows/${id}`, {
@@ -39,27 +44,27 @@ function PodcastDetail({ id }) {
         });
 
         if (!response.ok) {
-          throw new Error('Error al obtener los datos de la API de Spotify');
+          throw new Error('Error al obtener los detalles del podcast');
         }
 
         const data = await response.json();
         if (isMounted) {
-          setDetails(data); // Aquí estamos guardando los datos completos del show
+          setDetails(data); // Guardamos los detalles del podcast
         }
       } catch (err) {
         if (isMounted) {
           setError(err.message);
         }
-        console.error('Error al obtener datos de podcasts:', err);
+        console.error('Error al obtener detalles del podcast:', err);
       }
     }
 
-    fetchDetails();
+    fetchPodcastDetails();
 
     return () => {
-      isMounted = false; // Limpieza para evitar actualizaciones de estado tras el desmontaje
+      isMounted = false; // Limpieza para evitar actualizaciones de estado después del desmontaje
     };
-  }, [id]); // Añadimos 'id' en el array de dependencias para recargar si el id cambia
+  }, [id]); // El efecto depende de 'id', lo que significa que se vuelve a ejecutar si cambia el ID
 
   if (error) {
     return <p>Error: {error}</p>;
@@ -77,6 +82,6 @@ function PodcastDetail({ id }) {
       <h4>{details.publisher}</h4>
     </section>
   );
-}
+};
 
 export default PodcastDetail;

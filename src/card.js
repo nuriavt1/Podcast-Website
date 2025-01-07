@@ -1,19 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-
-function Card({ name, image, publisher }) {
-    return (
-
-        <Link to="/podcast-detail">
-            <div className="games-item">
-                <img src={image} alt={name} />
-                <h2>{name}</h2>
-                <p>{publisher}</p>
-            </div>
-        </Link>
-
-    )
+function Card({ id, name, image, publisher }) {
+    console.log(id, name, image, publisher);
+  return (
+    <Link to={`/podcast-detail/${id}`}>
+      <div className="games-item">
+        <img src={image} alt={name} />
+        <h2>{name}</h2>
+        {/* This will correctly display the ID */}
+        <p>ID: {id}</p>
+        <p>{publisher}</p>
+      </div>
+    </Link>
+  );
 }
 
 export default Card;
