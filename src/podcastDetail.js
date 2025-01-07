@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import EpisodesList from './episodesList';
 
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
@@ -29,6 +30,8 @@ const PodcastDetail = () => {
   const { id } = useParams(); // Obtener el ID de la URL
   const [details, setDetails] = useState(null);
   const [error, setError] = useState(null);
+
+//  const podcastId = { id };
 
   useEffect(() => {
     let isMounted = true; // Para evitar actualizaciones de estado si el componente se desmonta
@@ -75,12 +78,22 @@ const PodcastDetail = () => {
   }
 
   return (
-    <section>
-      <h2>{details.name}</h2>
-      <img src={details.images[0].url} alt={details.name} />
-      <h3>{details.description}</h3>
-      <h4>{details.publisher}</h4>
-    </section>
+    <div>
+      <section>
+        <h2>{details.name}</h2>
+        <img src={details.images[0].url} alt={details.name} />
+        <h3>{details.description}</h3>
+        <h4>{details.publisher}</h4>
+      </section>
+
+      <section>
+       
+      <EpisodesList id={ id } />
+      {/*<EpisodesList id="42fDhii4v5RYuHTgy00un2" />*/}
+      
+      </section>
+    </div>
+
   );
 };
 
