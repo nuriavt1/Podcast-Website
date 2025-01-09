@@ -20,7 +20,7 @@ header {
   /*border-bottom: 1px solid #003BFF;*/
   display: flex;
   align-items: center;
-  position: fixed;
+ /* position: fixed;*/
 }
 
 header img {

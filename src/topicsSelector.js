@@ -62,6 +62,7 @@ function TopicsSelector() {
   // Manejar el clic en "Next"
   const handleNext = () => {
     navigate("/start-podcasts", { state: { selectedCategories } }); // Enviar categorías
+   // navigate("/podcasts", { state: { selectedCategories, 'show', 'ES'} });
   };
 
   return (
