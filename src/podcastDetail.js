@@ -5,7 +5,6 @@ import EpisodesList from './episodesList';
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
 
-// Función para obtener el token de Spotify
 async function getToken() {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
@@ -27,14 +26,12 @@ async function getToken() {
 }
 
 const PodcastDetail = () => {
-  const { id } = useParams(); // Obtener el ID de la URL
+  const { id } = useParams();
   const [details, setDetails] = useState(null);
   const [error, setError] = useState(null);
 
-//  const podcastId = { id };
-
   useEffect(() => {
-    let isMounted = true; // Para evitar actualizaciones de estado si el componente se desmonta
+    let isMounted = true;
 
     async function fetchPodcastDetails() {
       try {
@@ -52,7 +49,7 @@ const PodcastDetail = () => {
 
         const data = await response.json();
         if (isMounted) {
-          setDetails(data); // Guardamos los detalles del podcast
+          setDetails(data);
         }
       } catch (err) {
         if (isMounted) {
@@ -65,16 +62,16 @@ const PodcastDetail = () => {
     fetchPodcastDetails();
 
     return () => {
-      isMounted = false; // Limpieza para evitar actualizaciones de estado después del desmontaje
+      isMounted = false;
     };
-  }, [id]); // El efecto depende de 'id', lo que significa que se vuelve a ejecutar si cambia el ID
+  }, [id]);
 
   if (error) {
     return <p>Error: {error}</p>;
   }
 
   if (!details) {
-    return <p>Cargando...</p>; // Mostrar cargando mientras no hay datos
+    return <p>Cargando...</p>;
   }
 
   return (
@@ -87,13 +84,9 @@ const PodcastDetail = () => {
       </section>
 
       <section>
-       
-      <EpisodesList id={ id } />
-      {/*<EpisodesList id="42fDhii4v5RYuHTgy00un2" />*/}
-      
+        <EpisodesList id={id} />
       </section>
     </div>
-
   );
 };
 

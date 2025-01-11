@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import EpisodeCard from './episodeCard';
+import Player from './player';
 
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
@@ -29,14 +30,19 @@ function EpisodesList({ id }) {
   const [episodes, setEpisodes] = useState([]);
   const [error, setError] = useState(null);
 
-  // Asegúrate de que el `podcastId` es válido antes de realizar la solicitud
+  // Estado para el reproductor global
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentAudioUrl, setCurrentAudioUrl] = useState(null);
+  const [currentTime, setCurrentTime] = useState(0); // Mantener el tiempo actual
+  const [currentIndex, setCurrentIndex] = useState(null); // Mantener el índice del episodio actual
+
   useEffect(() => {
     if (!id) {
       setError('No se proporcionó el ID del podcast');
       return;
     }
 
-    let isMounted = true; // Para evitar actualizaciones de estado si el componente se desmonta
+    let isMounted = true;
 
     async function fetchPodcasts() {
       try {
@@ -54,22 +60,55 @@ function EpisodesList({ id }) {
 
         const data = await response.json();
         if (isMounted) {
-          setEpisodes(data.items); // Accedemos al array de resultados de shows
+          setEpisodes(data.items);
         }
       } catch (err) {
         if (isMounted) {
           setError(err.message);
         }
-        console.error('Error al obtener datos de podcasts:', err);
       }
     }
 
     fetchPodcasts();
 
     return () => {
-      isMounted = false; // Limpieza para evitar actualizaciones de estado tras el desmontaje
+      isMounted = false;
     };
-  }, [id]); // Dependemos del `podcastId`, para que se ejecute cada vez que cambie
+  }, [id]);
+
+  const handlePlayPauseToggle = (audioUrl, index) => {
+    if (audioUrl === currentAudioUrl) {
+      // Si el audio actual es el mismo, alternar entre play/pause
+      setIsPlaying(!isPlaying);
+    } else {
+      // Si el audio es diferente, reproducir el nuevo audio
+      setCurrentAudioUrl(audioUrl);
+      setIsPlaying(true);
+      setCurrentIndex(index); // Establecer el índice del episodio
+    }
+  };
+
+  const handleTimeUpdate = (currentTime) => {
+    setCurrentTime(currentTime); // Actualizamos el tiempo globalmente
+  };
+
+  const playNextEpisode = () => {
+    if (currentIndex !== null && currentIndex < episodes.length - 1) {
+      const nextEpisode = episodes[currentIndex + 1];
+      setCurrentAudioUrl(nextEpisode.audio_preview_url);
+      setIsPlaying(true);
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const playPreviousEpisode = () => {
+    if (currentIndex !== null && currentIndex > 0) {
+      const previousEpisode = episodes[currentIndex - 1];
+      setCurrentAudioUrl(previousEpisode.audio_preview_url);
+      setIsPlaying(true);
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
 
   if (error) {
     return <p>Error: {error}</p>;
@@ -79,7 +118,7 @@ function EpisodesList({ id }) {
     <section>
       <h2>All Episodes</h2>
       <ul>
-        {episodes.map((item) => (
+        {episodes.map((item, index) => (
           <EpisodeCard
             key={item.id}
             id={item.id}
@@ -87,9 +126,23 @@ function EpisodesList({ id }) {
             description={item.description}
             duration_ms={item.duration_ms}
             release_date={item.release_date}
+            audio_preview_url={item.audio_preview_url}
+            isPlaying={isPlaying && currentAudioUrl === item.audio_preview_url} // Sincronizamos el play/pause
+            onPlayPauseToggle={() => handlePlayPauseToggle(item.audio_preview_url, index)} // Pasamos el índice al reproducir
           />
         ))}
       </ul>
+
+      {currentAudioUrl && (
+        <Player
+          audioPreviewUrl={currentAudioUrl}
+          isPlaying={isPlaying}
+          onPlayPauseToggle={() => setIsPlaying(!isPlaying)} // Reproducir/pausar en el reproductor global
+          onTimeUpdate={handleTimeUpdate} // Actualizar el progreso
+          playNextEpisode={playNextEpisode} // Función para el siguiente episodio
+          playPreviousEpisode={playPreviousEpisode} // Función para el episodio anterior
+        />
+      )}
     </section>
   );
 }
