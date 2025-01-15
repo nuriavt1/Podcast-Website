@@ -26,6 +26,25 @@ async function getToken() {
 
 function PodcastList({ podcasts, selectedCountry, selectedCategory }) {
   const [error, setError] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState(
+    JSON.parse(localStorage.getItem("selectedCategories")) || []
+  );
+
+  // UseEffect para escuchar cambios en localStorage y actualizar el estado de selectedCategories
+  useEffect(() => {
+    const handleStorageChange = () => {
+      // Actualizamos el estado cuando localStorage cambia
+      setSelectedCategories(JSON.parse(localStorage.getItem("selectedCategories")) || []);
+    };
+
+    // Añadimos el listener para cambios en localStorage
+    window.addEventListener("storage", handleStorageChange);
+
+    // Limpiamos el listener cuando el componente se desmonte
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []); // Solo lo hacemos una vez al montar el componente
 
   if (error) {
     return <p>Error: {error}</p>;

@@ -1,46 +1,26 @@
-/*import React from 'react';
-import logo from './nextCastLogo.svg';
-import {Link} from 'react-router-dom'
-
-function Header() {
-  return (
-  
-      <header>
-
-        <Link to="/">
-        <img src={logo} alt="logo Next-Cast" />
-        </Link>
-       
-        <ul>
-          <li><Link to="/podcasts">Podcasts</Link></li>
-          <li><Link to="/audiobooks">AudioBooks</Link></li>
-        </ul>
-
-
-
-      </header>
-  );
-}
-
-export default Header;*/
-
 import React, { useState } from 'react';
 import logo from './nextCastLogo.svg';
-import { Link } from 'react-router-dom';
-import Searcher from './searcher';
+import { Link, useNavigate } from 'react-router-dom';
+import search from './imatges/icons/search.svg';
 
 function Header() {
   const [showPodcastsDropdown, setShowPodcastsDropdown] = useState(false);
   const [showAudiobooksDropdown, setShowAudiobooksDropdown] = useState(false);
+  const navigate = useNavigate();
 
   const togglePodcastsDropdown = () => {
     setShowPodcastsDropdown(!showPodcastsDropdown);
-    setShowAudiobooksDropdown(false);
+    setShowAudiobooksDropdown(false); // Cerrar Audiobooks dropdown si se abre Podcasts
   };
 
   const toggleAudiobooksDropdown = () => {
     setShowAudiobooksDropdown(!showAudiobooksDropdown);
-    setShowPodcastsDropdown(false);
+    setShowPodcastsDropdown(false); // Cerrar Podcasts dropdown si se abre Audiobooks
+  };
+
+  const handleCategorySelect = (category) => {
+    localStorage.setItem('selectedCategories', JSON.stringify([category]));
+    navigate('/start-podcasts', { state: { selectedCategories: [category] } });
   };
 
   return (
@@ -48,156 +28,67 @@ function Header() {
       <Link to="/">
         <img src={logo} alt="logo Next-Cast" />
       </Link>
-      <Searcher />
+
       <ul>
-        <li onClick={togglePodcastsDropdown}>
+        <li
+          onClick={togglePodcastsDropdown}
+          onMouseEnter={() => setShowPodcastsDropdown(true)} // Mostrar al hacer hover
+          onMouseLeave={() => setShowPodcastsDropdown(false)} // Ocultar cuando se deja de hacer hover
+        >
           Podcasts
           {showPodcastsDropdown && (
             <ul className="dropdown">
-              {/*COMEDY*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Comedy'] },
-                  }}
-                >
-                  Comedy
-                </Link>
-              </li>
-
-              {/*MYSTERY*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Mystery'] },
-                  }}
-                >
-                  Mystery
-                </Link>
-              </li>
-
-              {/*SPORT*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Sport'] },
-                  }}
-                >
-                  Sport
-                </Link>
-              </li>
-
-              {/*SCIENCE & TECH*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Science & Tech'] },
-                  }}
-                >
-                  Science & Tech
-                </Link>
-              </li>
-
-              {/*History*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['History'] },
-                  }}
-                >
-                  History
-                </Link>
-              </li>
-
-              {/*POLITICS*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Politics'] },
-                  }}
-                >
-                  Politics
-                </Link>
-              </li>
-
-              {/*KIDS*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Kids'] },
-                  }}
-                >
-                  Kids
-                </Link>
-              </li>
-
-              {/*ART & CULTURE*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Art & Culture'] },
-                  }}
-                >
-                  Art & Culture
-                </Link>
-              </li>
-
-              {/*HEALTH*/}
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Health'] },
-                  }}
-                >
-                  Health
-                </Link>
-              </li>
+              {['Comedy', 'Mystery', 'Sport', 'Science & Tech', 'History', 'Politics', 'Kids', 'Art & Culture', 'Health'].map((category) => (
+                <li key={category}>
+                  <Link
+                    to="start-podcasts"
+                    onClick={() => handleCategorySelect(category)}
+                  >
+                    {category}
+                  </Link>
+                </li>
+              ))}
             </ul>
           )}
         </li>
 
-        <li onClick={toggleAudiobooksDropdown}>
+        <li
+          onClick={toggleAudiobooksDropdown}
+          onMouseEnter={() => setShowAudiobooksDropdown(true)} // Mostrar al hacer hover
+          onMouseLeave={() => setShowAudiobooksDropdown(false)} // Ocultar cuando se deja de hacer hover
+        >
           AudioBooks
           {showAudiobooksDropdown && (
             <ul className="dropdown">
-              <li>
-                <Link
-                  to={{
-                    pathname: '/start-podcasts',
-                    state: { selectedCategories: ['Fiction'] },
-                  }}
-                >
-                  Fiction
-                </Link>
-              </li>
-              <li>
-                <Link to={`/start-podcasts/`}>
-                  Mystery
-                </Link>
-              </li>
+              {['Fiction', 'Mystery'].map((category) => (
+                <li key={category}>
+                  <Link
+                    to="start-podcasts"
+                    onClick={() => handleCategorySelect(category)}
+                  >
+                    {category}
+                  </Link>
+                </li>
+              ))}
             </ul>
           )}
         </li>
 
         <li>
           <Link
-          to={{
-            pathname: '/savedContent',
-            state: { selectedCategories: ['Fiction'] },
-          }}
-        >
-         My List
-        </Link></li>
+            to={{
+              pathname: '/savedContent',
+              state: { selectedCategories: ['Fiction'] },
+            }}
+          >
+            My List
+          </Link>
+        </li>
       </ul>
+
+      <Link to="searchContainer">
+        <img src={search} alt="Search" />
+      </Link>
 
       {/* Estilos para los dropdowns */}
       <style jsx>{`
@@ -206,11 +97,6 @@ function Header() {
           justify-content: space-between;
           align-items: center;
           padding: 20px;
-        }
-
-        header img {
-          width: 150px;
-          height: auto;
         }
 
         ul {
@@ -244,7 +130,8 @@ function Header() {
         }
 
         li:hover > ul.dropdown,
-        li:focus-within > ul.dropdown {
+        li:focus-within > ul.dropdown,
+        li:active > ul.dropdown {
           display: block;
           opacity: 1;
         }
@@ -260,10 +147,8 @@ function Header() {
           position: relative;
         }
 
-       ul.dropdown li a:hover {
-      color: #5700FF;
-      font-weight: 00;
-         /*  background-color: #16a085;*/
+        ul.dropdown li a:hover {
+          color: #5700FF;
         }
 
         li:hover {
@@ -296,4 +181,3 @@ function Header() {
 }
 
 export default Header;
-

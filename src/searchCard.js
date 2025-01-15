@@ -20,4 +20,4 @@ function SearchCard({ id, name, image, publisher }) {
     );
 }
 
-export default Card;
+export default SearchCard;

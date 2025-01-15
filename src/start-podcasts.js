@@ -29,12 +29,19 @@ async function getToken() {
 }
 
 function StartPodcasts() {
-  const location = useLocation();
-  const { selectedCategories = [] } = location.state || {}; // Asegúrate de que sea un array vacío si no hay datos
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [podcasts, setPodcasts] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [error, setError] = useState(null);
+
+  // Recuperar las categorías del localStorage al cargar el componente
+  useEffect(() => {
+    const storedCategories = localStorage.getItem("selectedCategories");
+    if (storedCategories) {
+      setSelectedCategories(JSON.parse(storedCategories)); // Convertimos de string a array
+    }
+  }, []); // Solo se ejecuta una vez al montar el componente
 
   // Llamar a la API para obtener los podcasts por defecto cuando la página se carga
   useEffect(() => {
@@ -81,7 +88,6 @@ function StartPodcasts() {
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry} 
       />
-      <PodcastsCategories />
       <TopRecentPodcasts />
       <PodcastList 
         podcasts={podcasts} 

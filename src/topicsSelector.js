@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import topicImg from "./topicImg.svg";
 import arrowRight from "./arrowRight.svg";
 import plusIcon from "./plusIcon.svg";
@@ -36,18 +36,32 @@ function TopicsSelector() {
   const [selectedCategories, setSelectedCategories] = useState([]); // Inicializado como array
   const navigate = useNavigate();
 
+  // Recuperamos las categorías del localStorage al cargar el componente
+  useEffect(() => {
+    const storedCategories = localStorage.getItem("selectedCategories");
+    if (storedCategories) {
+      setSelectedCategories(JSON.parse(storedCategories)); // Convertimos de string a array
+    }
+  }, []);
+
   // Guardar categoría seleccionada
   const saveCategory = (category) => {
-    setSelectedCategories((prevState) =>
-      prevState.includes(category) ? prevState : [...prevState, category]
-    );
+    setSelectedCategories((prevState) => {
+      const updatedCategories = [...prevState, category];
+      // Guardar las categorías en localStorage
+      localStorage.setItem("selectedCategories", JSON.stringify(updatedCategories));
+      return updatedCategories;
+    });
   };
 
   // Eliminar categoría seleccionada
   const deleteCategory = (category) => {
-    setSelectedCategories((prevState) =>
-      prevState.filter((item) => item !== category)
-    );
+    setSelectedCategories((prevState) => {
+      const updatedCategories = prevState.filter((item) => item !== category);
+      // Guardar las categorías actualizadas en localStorage
+      localStorage.setItem("selectedCategories", JSON.stringify(updatedCategories));
+      return updatedCategories;
+    });
   };
 
   // Alternar selección de categorías
@@ -62,7 +76,6 @@ function TopicsSelector() {
   // Manejar el clic en "Next"
   const handleNext = () => {
     navigate("/start-podcasts", { state: { selectedCategories } }); // Enviar categorías
-   // navigate("/podcasts", { state: { selectedCategories, 'show', 'ES'} });
   };
 
   return (
@@ -98,4 +111,5 @@ function TopicsSelector() {
 }
 
 export default TopicsSelector;
+
 

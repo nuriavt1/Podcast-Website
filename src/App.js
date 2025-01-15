@@ -8,6 +8,7 @@ import PodcastDetail from './podcastDetail';
 import StartPodcast from './start-podcasts';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import SavedContent from './savedContent';
+import SearchContainer from './searchContainer';
 import { ContextProvider } from './Context'; // Asegúrate de importar el ContextProvider
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <Route path="/podcast-detail/:id" element={<PodcastDetail />} />
             <Route path="/start-podcasts" element={<StartPodcast />} />
             <Route path="/savedContent" element={<SavedContent />} />
+            <Route path="/searchContainer" element={<SearchContainer />} />
           </Routes>
         </Router>
       </ContextProvider>

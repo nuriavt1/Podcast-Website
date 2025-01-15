@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 // Función para obtener el token de Spotify
 async function getToken() {
   const client_id = "d21f9fa9e9834547a686c4595b539595";
@@ -15,35 +16,44 @@ async function getToken() {
     },
   });
 
+
   if (!response.ok) {
     throw new Error("Error al obtener el token");
   }
+
 
   const data = await response.json();
   return data.access_token;
 }
 
+
 function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selectedCountry, setSelectedCountry }) {
   const [search, setSearch] = useState('');
   const [error, setError] = useState(null);
 
+
   const categories = ['show', 'audiobook'];
   const countries = ['ES', 'CA', 'US', 'GB', 'DE', 'FR', 'MX'];
+
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
 
+
   const handleCountryChange = (e) => {
     setSelectedCountry(e.target.value);
   };
+
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
 
+
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
+
 
     // Verificamos si hay algo en el campo de búsqueda
     if (!search.trim()) {
@@ -51,8 +61,10 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
       return;
     }
 
+
     try {
       const token = await getToken();
+
 
       // Construir la URL con los filtros seleccionados
       let url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(search)}&type=show&limit=10`;
@@ -63,6 +75,7 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
         url += `&category=${selectedCategory}`; // Aplicar el filtro de categoría
       }
 
+
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -70,7 +83,9 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
         },
       });
 
+
       const data = await response.json();
+
 
       // Actualizamos los podcasts con los resultados de la búsqueda
       setPodcasts(data.shows.items || []);
@@ -78,6 +93,7 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
       setError("Error al obtener los podcasts: " + err.message);
     }
   };
+
 
   return (
     <section>
@@ -88,7 +104,7 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
           onChange={handleSearchChange}
           placeholder="Search podcasts..."
         />
-        
+       
         {/* Filtro de categoría */}
         <select value={selectedCategory} onChange={handleCategoryChange}>
           <option value="">Select Category</option>
@@ -96,6 +112,7 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
             <option key={category} value={category}>{category}</option>
           ))}
         </select>
+
 
         {/* Filtro de país */}
         <select value={selectedCountry} onChange={handleCountryChange}>
@@ -105,12 +122,15 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
           ))}
         </select>
 
+
         <button className="Searcher-button" type="submit">Search</button>
       </form>
+
 
       {error && <p>{error}</p>}
     </section>
   );
 }
+
 
 export default Searcher;

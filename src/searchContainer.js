@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom"; // Para recibir el estado con las categorías seleccionadas
 import Searcher from './searcher';
-import PodcastList from './podcastList';
+import PodcastSearchList from './podcastSearchList';
 import PodcastsCategories from './podcastsCategories';
 import TopRecentPodcasts from './topRecentPodcasts';
+
 
 // Función para obtener el token de Spotify
 async function getToken() {
@@ -20,13 +21,16 @@ async function getToken() {
     },
   });
 
+
   if (!response.ok) {
     throw new Error("Error al obtener el token");
   }
 
+
   const data = await response.json();
   return data.access_token;
 }
+
 
 function SearchContainer() {
   const location = useLocation();
@@ -35,6 +39,7 @@ function SearchContainer() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [error, setError] = useState(null);
+
 
   // Llamar a la API para obtener los podcasts por defecto cuando la página se carga
   useEffect(() => {
@@ -63,32 +68,37 @@ function SearchContainer() {
         }
       };
 
+
       fetchPodcasts();
     }
   }, [selectedCategories]); // Dependemos de las categorías seleccionadas
+
 
   // Si hay un error, mostramos el mensaje de error
   if (error) {
     return <p>Error: {error}</p>;
   }
 
+
   return (
     <section>
+      
       <Searcher
-        setPodcasts={setPodcasts} 
-        selectedCategory={selectedCategory} 
+        setPodcasts={setPodcasts}
+        selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry} 
+        setSelectedCountry={setSelectedCountry}
       />
-      
-      <PodcastList 
-        podcasts={podcasts} 
-        selectedCountry={selectedCountry} 
-        selectedCategory={selectedCategory} 
+     
+      <PodcastSearchList
+        podcasts={podcasts}
+        selectedCountry={selectedCountry}
+        selectedCategory={selectedCategory}
       />
     </section>
   );
 }
+
 
 export default SearchContainer;
