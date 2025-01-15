@@ -3,7 +3,9 @@ import { useLocation } from "react-router-dom"; // Para recibir el estado con la
 import Searcher from './searcher';
 import PodcastList from './podcastList';
 import PodcastsCategories from './podcastsCategories';
+import TopRecentPodcasts from './topRecentPodcasts';
 
+/*
 const client_id = "d21f9fa9e9834547a686c4595b539595";
 const client_secret = "224cbbce3d5943cba4229f4d40b172ad";
 
@@ -26,7 +28,7 @@ async function getToken() {
 
   const data = await response.json();
   return data.access_token;
-}
+}*/
 
 function StartPodcasts() {
   const location = useLocation();
@@ -36,6 +38,8 @@ function StartPodcasts() {
     <section>
       <Searcher />
       <PodcastsCategories />
+      <TopRecentPodcasts />
+      {/*<TopRecentPodcasts />*/}
       <PodcastList selectedCategories={selectedCategories} /> {/* Asegúrate de pasar siempre un arreglo */}
     </section>
   );
