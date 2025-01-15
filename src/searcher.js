@@ -1,68 +1,103 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Importamos useNavigate
+import React, { useState } from "react";
 
-function Searcher() {
-  // Estado para los filtros
-  const [search, setSearch] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
+// Función para obtener el token de Spotify
+async function getToken() {
+  const client_id = "d21f9fa9e9834547a686c4595b539595";
+  const client_secret = "224cbbce3d5943cba4229f4d40b172ad";
+  const response = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+    }),
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${btoa(`${client_id}:${client_secret}`)}`,
+    },
+  });
 
-  // Opciones para los filtros (esto puede ser dinámico desde una API)
-  const categories = [
-'show', 'audiobook'
-  ];
+  if (!response.ok) {
+    throw new Error("Error al obtener el token");
+  }
 
-  const countries = ['ES', 'CA', 'US', 'GB', 'DE', 'FR', 'MX']; // Ejemplo de países
+  const data = await response.json();
+  return data.access_token;
+}
 
-  // Crear una instancia del hook useNavigate
-  const navigate = useNavigate();
+function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selectedCountry, setSelectedCountry }) {
+  const [search, setSearch] = useState('');
+  const [error, setError] = useState(null);
 
-  // Función para manejar el cambio en el campo de búsqueda
+  const categories = ['show', 'audiobook'];
+  const countries = ['ES', 'CA', 'US', 'GB', 'DE', 'FR', 'MX'];
+
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
 
-  // Función para manejar el cambio de género
-  const handleGenreChange = (e) => {
-    setSelectedGenre(e.target.value);
-  };
-
-  // Función para manejar el cambio de país
   const handleCountryChange = (e) => {
     setSelectedCountry(e.target.value);
   };
 
-  // Función para manejar el envío del formulario
-  const handleSearchSubmit = (e) => {
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
 
-    // Navegar a la página de podcasts con los filtros aplicados
-    navigate("/podcasts", { state: { search, selectedGenre, selectedCountry } });
+    // Verificamos si hay algo en el campo de búsqueda
+    if (!search.trim()) {
+      alert('Please enter a search term');
+      return;
+    }
 
-    // Aquí puedes agregar la lógica para realizar la búsqueda
-    console.log("Searching for:", search, "Categories:", selectedGenre, "Country:", selectedCountry);
+    try {
+      const token = await getToken();
+
+      // Construir la URL con los filtros seleccionados
+      let url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(search)}&type=show&limit=10`;
+      if (selectedCountry) {
+        url += `&market=${selectedCountry}`; // Aplicar el filtro de país
+      }
+      if (selectedCategory) {
+        url += `&category=${selectedCategory}`; // Aplicar el filtro de categoría
+      }
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      // Actualizamos los podcasts con los resultados de la búsqueda
+      setPodcasts(data.shows.items || []);
+    } catch (err) {
+      setError("Error al obtener los podcasts: " + err.message);
+    }
   };
 
   return (
     <section>
       <form onSubmit={handleSearchSubmit}>
-        {/* Campo de texto o Buscador */}
         <input
           type="text"
           value={search}
           onChange={handleSearchChange}
           placeholder="Search podcasts..."
         />
-
-        {/* Filtro por género */}
-        <select value={selectedGenre} onChange={handleGenreChange}>
+        
+        {/* Filtro de categoría */}
+        <select value={selectedCategory} onChange={handleCategoryChange}>
           <option value="">Select Category</option>
           {categories.map((category) => (
             <option key={category} value={category}>{category}</option>
           ))}
         </select>
 
-        {/* Filtro por país */}
+        {/* Filtro de país */}
         <select value={selectedCountry} onChange={handleCountryChange}>
           <option value="">Select Country</option>
           {countries.map((country) => (
@@ -70,12 +105,12 @@ function Searcher() {
           ))}
         </select>
 
-        {/* Botón para enviar el formulario */}
-        <button type="submit">Filter</button>
+        <button type="submit">Search</button>
       </form>
+
+      {error && <p>{error}</p>}
     </section>
   );
 }
 
 export default Searcher;
-
