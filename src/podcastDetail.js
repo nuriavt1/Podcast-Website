@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import EpisodesList from './episodesList';
 import RelatedContent from './relatedContent';
+import { useSavedPodcasts } from './Context';  // Asegúrate de importar el hook correcto
 
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
@@ -28,6 +29,7 @@ async function getToken() {
 
 const PodcastDetail = () => {
   const { id } = useParams();
+  const { savedPodcasts, addPodcast, removePodcast } = useSavedPodcasts();  // Usamos el hook del contexto
   const [details, setDetails] = useState(null);
   const [error, setError] = useState(null);
 
@@ -68,6 +70,15 @@ const PodcastDetail = () => {
     };
   }, [id]);
 
+  // Función para alternar el guardado del podcast
+  function toggleSavePodcast() {
+    if (savedPodcasts.includes(id)) {
+      removePodcast(id); // Llamamos a la función del contexto para eliminarlo
+    } else {
+      addPodcast(id); // Llamamos a la función del contexto para agregarlo
+    }
+  }
+
   if (error) {
     return <p>Error: {error}</p>;
   }
@@ -82,8 +93,11 @@ const PodcastDetail = () => {
       <section>
         <h2>{details.name}</h2>
         <img src={details.images[0]?.url} alt={details.name} />
-        <h3>{details.description}</h3>
-        <h4>{details.publisher}</h4>
+        <p>{details.description}</p>
+        <h4>Publicado por: {details.publisher}</h4>
+        <button onClick={toggleSavePodcast}>
+          {savedPodcasts.includes(id) ? 'Eliminar de la lista' : 'Guardar en la lista'}
+        </button>
       </section>
 
       {/* Lista de episodios */}

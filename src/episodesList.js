@@ -26,6 +26,19 @@ async function getToken() {
   return data.access_token;
 }
 
+// Función para guardar el progreso en localStorage
+const saveProgress = (episodeId, currentTime) => {
+  const savedProgress = JSON.parse(localStorage.getItem('audioProgress')) || {};
+  savedProgress[episodeId] = currentTime;
+  localStorage.setItem('audioProgress', JSON.stringify(savedProgress));
+};
+
+// Función para obtener el progreso desde localStorage
+const getProgress = (episodeId) => {
+  const savedProgress = JSON.parse(localStorage.getItem('audioProgress')) || {};
+  return savedProgress[episodeId] || 0; // Devuelve 0 si no se encuentra progreso
+};
+
 function EpisodesList({ id }) {
   const [episodes, setEpisodes] = useState([]);
   const [error, setError] = useState(null);
@@ -34,7 +47,7 @@ function EpisodesList({ id }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentAudioUrl, setCurrentAudioUrl] = useState(null);
   const [currentTime, setCurrentTime] = useState(0); // Mantener el tiempo actual
-  const [currentIndex, setCurrentIndex] = useState(null); // Mantener el índice del episodio actual
+  const [currentIndex, setCurrentIndex] = useState(null); // Mantener el índice del episodio
 
   useEffect(() => {
     if (!id) {
@@ -85,11 +98,16 @@ function EpisodesList({ id }) {
       setCurrentAudioUrl(audioUrl);
       setIsPlaying(true);
       setCurrentIndex(index); // Establecer el índice del episodio
+      const progress = getProgress(episodes[index].id);
+      setCurrentTime(progress); // Recuperamos el progreso guardado para el episodio
     }
   };
 
   const handleTimeUpdate = (currentTime) => {
     setCurrentTime(currentTime); // Actualizamos el tiempo globalmente
+    if (currentIndex !== null && episodes[currentIndex]) {
+      saveProgress(episodes[currentIndex].id, currentTime); // Guardamos el progreso del episodio
+    }
   };
 
   const playNextEpisode = () => {
@@ -98,6 +116,7 @@ function EpisodesList({ id }) {
       setCurrentAudioUrl(nextEpisode.audio_preview_url);
       setIsPlaying(true);
       setCurrentIndex(currentIndex + 1);
+      setCurrentTime(getProgress(nextEpisode.id)); // Recuperamos el progreso del siguiente episodio
     }
   };
 
@@ -107,6 +126,7 @@ function EpisodesList({ id }) {
       setCurrentAudioUrl(previousEpisode.audio_preview_url);
       setIsPlaying(true);
       setCurrentIndex(currentIndex - 1);
+      setCurrentTime(getProgress(previousEpisode.id)); // Recuperamos el progreso del episodio anterior
     }
   };
 
@@ -122,21 +142,23 @@ function EpisodesList({ id }) {
     <section>
       <h2>All Episodes</h2>
       <ul>
-        {episodes.map((item, index) => (
-          <EpisodeCard
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            description={item.description}
-            duration_ms={item.duration_ms}
-            release_date={item.release_date}
-            audio_preview_url={item.audio_preview_url}
-            isPlaying={isPlaying && currentAudioUrl === item.audio_preview_url} // Sincronizamos el play/pause
-            onPlayPauseToggle={() => handlePlayPauseToggle(item.audio_preview_url, index)} // Pasamos el índice al reproducir
-          />
-        ))}
+        {episodes
+          .filter((item) => item && item.id) // Filtrar episodios válidos
+          .map((item, index) => (
+            <EpisodeCard
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              description={item.description}
+              duration_ms={item.duration_ms}
+              release_date={item.release_date}
+              audio_preview_url={item.audio_preview_url}
+              isPlaying={isPlaying && currentAudioUrl === item.audio_preview_url} // Sincronizamos el play/pause
+              onPlayPauseToggle={() => handlePlayPauseToggle(item.audio_preview_url, index)} // Pasamos el índice al reproducir
+            />
+          ))}
       </ul>
-
+  
       {currentAudioUrl && (
         <Player
           audioPreviewUrl={currentAudioUrl}
@@ -150,6 +172,5 @@ function EpisodesList({ id }) {
     </section>
   );
 }
-
 
 export default EpisodesList;

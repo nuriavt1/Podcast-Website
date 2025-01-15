@@ -51,14 +51,15 @@ function TopRecentPodcasts() {
 
   // Obtener los podcasts desde Spotify (solo se ejecuta una vez después de obtener los topPodcasts)
   useEffect(() => {
-    if (0 < topPodcasts.length < 5) {
+    if (topPodcasts.length > 0) {
       const fetchPodcasts = async () => {
         try {
           const token = await getToken();
+          const limitedPodcasts = topPodcasts.slice(0, 5); // Tomamos solo los primeros 5 elementos
           const allPodcasts = await Promise.all(
-            topPodcasts.map(async (podcast) => {
+            limitedPodcasts.map(async (podcast) => {
               const encodedPodcast = encodeURIComponent(podcast);
-
+  
               const response = await fetch(
                 `https://api.spotify.com/v1/search?q=${encodedPodcast}&type=show&limit=1`,
                 {
@@ -77,15 +78,16 @@ function TopRecentPodcasts() {
               }
             })
           );
-          setPodcasts(allPodcasts.flat());  // Aplanamos los resultados y los guardamos en el estado
+          setPodcasts(allPodcasts.flat()); // Aplanamos los resultados y los guardamos en el estado
         } catch (err) {
-          setError(err.message);  // Capturamos errores y los mostramos
+          setError(err.message); // Capturamos errores y los mostramos
         }
       };
-
+  
       fetchPodcasts();
     }
-  }, [topPodcasts]);  // Este efecto depende de la lista de topPodcasts, pero no se vuelve a ejecutar
+  }, [topPodcasts]);
+   // Este efecto depende de la lista de topPodcasts, pero no se vuelve a ejecutar
 
   // Si hay errores, los mostramos
   if (error) {

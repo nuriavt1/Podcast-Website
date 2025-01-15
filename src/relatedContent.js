@@ -35,7 +35,7 @@ function RelatedContent({ podcastName }) {
       try {
         const token = await getToken();
         const response = await fetch(
-          `https://api.spotify.com/v1/search?q=${encodeURIComponent(podcastName)}&type=show&limit=5`,
+          `https://api.spotify.com/v1/search?q=${encodeURIComponent(podcastName)}&type=show&limit=6`,
           {
             method: 'GET',
             headers: {
@@ -80,15 +80,17 @@ function RelatedContent({ podcastName }) {
         <p>No related podcasts found.</p>
       ) : (
         <ul>
-          {relatedPodcasts.map((podcast) => (
-            <Card
-              key={podcast.id}
-              id={podcast.id}
-              name={podcast.name}
-              image={podcast.images[0]?.url}
-              publisher={podcast.publisher}
-            />
-          ))}
+          {relatedPodcasts
+            .filter((podcast) => podcast.name !== podcastName) // Excluye el podcast con el mismo nombre
+            .map((podcast) => (
+              <Card
+                key={podcast.id}
+                id={podcast.id}
+                name={podcast.name}
+                image={podcast.images[0]?.url}
+                publisher={podcast.publisher}
+              />
+            ))}
         </ul>
       )}
     </section>

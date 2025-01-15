@@ -1,23 +1,42 @@
-import { createContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const client_id = 'd21f9fa9e9834547a686c4595b539595';
-const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
+// Crear el contexto
+const SavedPodcastsContext = createContext();
 
-async function getToken() {
-  const response = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    body: new URLSearchParams({
-      'grant_type': 'client_credentials',
-    }),
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')),
-    },
+// Crear el provider
+export const ContextProvider = ({ children }) => {
+  // Cargar el estado inicial desde localStorage
+  const [savedPodcasts, setSavedPodcasts] = useState(() => {
+    const saved = localStorage.getItem('savedPodcastsIds');
+    return saved ? JSON.parse(saved) : [];  // Si hay datos en localStorage, usarlos; si no, iniciar con un array vacío.
   });
 
-  return await response.json();
-}
+  // Función para agregar un podcast al estado
+  const addPodcast = (id) => {
+    setSavedPodcasts((prevState) => {
+      const updatedState = [...prevState, id];
+      localStorage.setItem('savedPodcastsIds', JSON.stringify(updatedState));  // Guardar en localStorage
+      return updatedState;
+    });
+  };
 
+  // Función para eliminar un podcast del estado
+  const removePodcast = (id) => {
+    setSavedPodcasts((prevState) => {
+      const updatedState = prevState.filter((podcastId) => podcastId !== id);
+      localStorage.setItem('savedPodcastsIds', JSON.stringify(updatedState));  // Guardar en localStorage
+      return updatedState;
+    });
+  };
 
+  return (
+    <SavedPodcastsContext.Provider value={{ savedPodcasts, addPodcast, removePodcast }}>
+      {children}
+    </SavedPodcastsContext.Provider>
+  );
+};
 
-export const LevelContext = createContext(getToken);
+// Crear el hook para acceder al contexto
+export const useSavedPodcasts = () => {
+  return useContext(SavedPodcastsContext);
+};

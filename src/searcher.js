@@ -105,7 +105,7 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
           ))}
         </select>
 
-        <button type="submit">Search</button>
+        <button className="Searcher-button" type="submit">Search</button>
       </form>
 
       {error && <p>{error}</p>}
