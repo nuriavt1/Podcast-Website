@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import EpisodesList from './episodesList';
+import RelatedContent from './relatedContent';
 
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
@@ -33,6 +34,7 @@ const PodcastDetail = () => {
   useEffect(() => {
     let isMounted = true;
 
+    // Obtener detalles del podcast
     async function fetchPodcastDetails() {
       try {
         const token = await getToken();
@@ -76,15 +78,22 @@ const PodcastDetail = () => {
 
   return (
     <div>
+      {/* Detalles del podcast */}
       <section>
         <h2>{details.name}</h2>
-        <img src={details.images[0].url} alt={details.name} />
+        <img src={details.images[0]?.url} alt={details.name} />
         <h3>{details.description}</h3>
         <h4>{details.publisher}</h4>
       </section>
 
+      {/* Lista de episodios */}
       <section>
         <EpisodesList id={id} />
+      </section>
+
+      {/* Contenido relacionado */}
+      <section>
+        <RelatedContent podcastName={details.name} />
       </section>
     </div>
   );
