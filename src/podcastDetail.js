@@ -3,6 +3,10 @@ import { useParams } from 'react-router-dom';
 import EpisodesList from './episodesList';
 import RelatedContent from './relatedContent';
 import { useSavedPodcasts } from './Context';  // Asegúrate de importar el hook correcto
+import styles from './style/podcastDetail.module.css';
+import addWhite from './imatges/icons/addWhite.svg';
+import dashWhite from './imatges/icons/dashWhite.svg';
+
 
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
@@ -90,14 +94,27 @@ const PodcastDetail = () => {
   return (
     <div>
       {/* Detalles del podcast */}
-      <section>
+      <section className={styles.podcastDetail}>
+        <img className='coverImg' src={details.images[0]?.url} alt={details.name} />
+        <div>
         <h2>{details.name}</h2>
-        <img src={details.images[0]?.url} alt={details.name} />
+        <h4>{details.publisher}</h4>
         <p>{details.description}</p>
-        <h4>Publicado por: {details.publisher}</h4>
+        
         <button onClick={toggleSavePodcast}>
-          {savedPodcasts.includes(id) ? 'Eliminar de la lista' : 'Guardar en la lista'}
-        </button>
+  <img
+    src={
+      savedPodcasts.includes(id)
+        ? addWhite // Imagen para "Guardado"
+        : dashWhite // Imagen para "No guardado"
+    }
+    alt={savedPodcasts.includes(id) ? 'Guardado' : 'No guardado'}
+  />
+  {savedPodcasts.includes(id) ? 'Eliminar de la lista' : 'Guardar en la lista'}
+</button>
+
+        </div>
+       
       </section>
 
       {/* Lista de episodios */}
