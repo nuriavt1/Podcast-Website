@@ -114,6 +114,10 @@ function EpisodesList({ id }) {
     return <p>Error: {error}</p>;
   }
 
+  if (episodes.length === 0) {
+    return <p>No hay episodios disponibles aún.</p>;
+  }
+
   return (
     <section>
       <h2>All Episodes</h2>
@@ -146,5 +150,6 @@ function EpisodesList({ id }) {
     </section>
   );
 }
+
 
 export default EpisodesList;
