@@ -1,0 +1,33 @@
+.searcher {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+}
+
+
+.searcher button {
+    background-color: black;
+    color: white;
+    border: none;
+    font-weight: normal;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.searcher select {
+    color: #000;
+    font-family: "Inter Tight";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.searcher input {
+    padding: 10px;
+    border-radius: 20px 0px 0px 20px;
+    font-family: "Inter Tight";
+    font-size: 16px;
+}

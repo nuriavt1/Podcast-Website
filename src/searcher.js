@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import styles from './style/searcher.module.css';
 
 // Función para obtener el token de Spotify
 async function getToken() {
@@ -96,7 +96,7 @@ function Searcher({ setPodcasts, selectedCategory, setSelectedCategory, selected
 
 
   return (
-    <section>
+    <section className={styles.searcher}>
       <form onSubmit={handleSearchSubmit}>
         <input
           type="text"

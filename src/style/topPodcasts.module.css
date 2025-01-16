@@ -1,0 +1,14 @@
+.topPodcasts{
+    background-color: #000000;
+}
+
+.title{
+    color: #ffffff;
+    font-family: "Inter Tight";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;  
+    padding-top: 50px;
+}
+

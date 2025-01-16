@@ -75,7 +75,7 @@ function RelatedContent({ podcastName }) {
 
   return (
     <section>
-      <h3>Related Podcasts</h3>
+      <h3 className='releatedTitle'>Related Podcasts</h3>
       {relatedPodcasts.length === 0 ? (
         <p>No related podcasts found.</p>
       ) : (

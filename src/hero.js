@@ -2,14 +2,20 @@ import React from 'react';
 import heroImg from './heroImg.svg';
 import arrowRight from './arrowRight.svg';
 import { Link } from 'react-router-dom'
+import styles from './style/hero.module.css';
+import TopRecentPodcasts from './topRecentPodcasts';
+import ic1 from './imatges/icons/ic1.svg';
+import ic2 from './imatges/icons/ic2.svg';
+import ic3 from './imatges/icons/ic3.svg';
+import banner from './imatges/banner.svg';
 
 function Hero() {
   return (
 
-    <div className='home'>
+    <div className={styles.hero}>
       <div class="hero">
 
-        <div class="hero-text">
+        <div className={styles.home}>
           <h1>Press Play. Chill Out.</h1>
           <h2>The best podcasts, all in one spot. Ready when you are.</h2>
 
@@ -46,26 +52,31 @@ function Hero() {
           </div>
         </div>
       </section>
-      <section>
-        <h1>Where ideas take flight and stories find their nest.</h1>
+      <section className={styles.ilustration}>
+        <h1 >Where ideas take flight and stories find their nest.</h1>
+        <img src={banner} alt="banner"/>
       </section>
-      <section>
+      <section className={styles.services} >
         <div>
-          <h2>The best. Now free</h2>
+        <img src={ic1} alt="tag" width="42" height="42" />
+          <h2 className={styles.titulo1}>The best. Now free</h2>
           <p>The world’s most powerful podcast platform, now available for free.</p>
         </div>
         <div>
-        <h2>Easy to use</h2>
+        <img src={ic2} alt="tag" width="42" height="42" />
+        <h2 className={styles.titulo2}>Easy to use</h2>
         <p>Our podcast player provides next level listening, search and discovery tools.</p>
         </div>
         <div>
-        <h2>Curated by experts</h2>
+        <img src={ic3} alt="tag" width="42" height="42" />
+        <h2 className={styles.titulo3}>Curated by experts</h2>
         <p>Find your next obsession with our hand curated podcast recommendations</p>
         </div>
       </section>
       <section>
-        <h3>New Podcasts</h3>
-        <p>Dive into a world of thought-provoking conversations, trending topics, and expert opinions.</p>
+      <TopRecentPodcasts />
+       {/* <h3>New Podcasts</h3>
+        <p>Dive into a world of thought-provoking conversations, trending topics, and expert opinions.</p>*/}
       </section>
       <section>
       <h3>All Topics</h3>

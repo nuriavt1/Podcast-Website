@@ -95,7 +95,7 @@ const PodcastDetail = () => {
     <div>
       {/* Detalles del podcast */}
       <section className={styles.podcastDetail}>
-        <img className='coverImg' src={details.images[0]?.url} alt={details.name} />
+        <img className={styles.coverImg} src={details.images[0]?.url} alt={details.name} />
         <div>
         <h2>{details.name}</h2>
         <h4>{details.publisher}</h4>
@@ -105,12 +105,12 @@ const PodcastDetail = () => {
   <img
     src={
       savedPodcasts.includes(id)
-        ? addWhite // Imagen para "Guardado"
-        : dashWhite // Imagen para "No guardado"
+        ? dashWhite // Imagen para "Guardado"
+        :  addWhite// Imagen para "No guardado"
     }
-    alt={savedPodcasts.includes(id) ? 'Guardado' : 'No guardado'}
+    alt={savedPodcasts.includes(id) ? 'Saved' : 'Not saved'}
   />
-  {savedPodcasts.includes(id) ? 'Eliminar de la lista' : 'Guardar en la lista'}
+  {savedPodcasts.includes(id) ? 'Remove from List' : 'Add to List'}
 </button>
 
         </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Card from "./card";
+import TopCard from "./topCard";
+import styles from './style/topPodcasts.module.css';
 
 // Función para obtener el token de acceso de Spotify
 async function getToken() {
@@ -95,14 +96,14 @@ function TopRecentPodcasts() {
   }
 
   return (
-    <section>
-      <h2>Top Podcasts</h2>
+    <section className={styles.topPodcasts}>
+      <h2 className={styles.title}>The trending podcasts</h2>
       {podcasts.length === 0 ? (
         <p>Loading podcasts...</p>  // Mensaje mientras se cargan los podcasts
       ) : (
         <ul>
           {podcasts.map((item) => (
-            <Card
+            <TopCard
               key={item.id}
               id={item.id}
               name={item.name}

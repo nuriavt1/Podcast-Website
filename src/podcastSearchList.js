@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "./card"; // Asegúrate de que la ruta del archivo sea correcta
+import styles from './style/podcastSearchList.module.css';
 
 function PodcastSearchList({ podcasts }) {
   if (!podcasts || podcasts.length === 0) {
@@ -7,9 +8,9 @@ function PodcastSearchList({ podcasts }) {
   }
 
   return (
-    <section>
-      <h2>Podcast Results</h2>
-      <div className="podcast-results">
+    <section className={styles.podcastSearchList}>
+     {/*<h2 className={styles.title}>Podcast Results</h2> */} 
+      <div className={styles.results}>
         {podcasts.map((podcast) => (
           <Card
             key={podcast.id}

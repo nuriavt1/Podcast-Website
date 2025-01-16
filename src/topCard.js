@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './style/card.module.css';
+
 import addWhite from './imatges/icons/addWhite.svg';
 import dashWhite from './imatges/icons/dashWhite.svg';
+import styles from './style/topCard.module.css';
 
 import { useSavedPodcasts } from './Context';// Importamos el hook del contexto
 
-function Card({ id, name, image, publisher }) {
+function TopCard({ id, name, image, publisher }) {
   // Accedemos a las funciones del contexto
   const { savedPodcasts, addPodcast, removePodcast } = useSavedPodcasts();
 
@@ -21,7 +22,7 @@ function Card({ id, name, image, publisher }) {
 
   return (
     <Link to={`/podcast-detail/${id}`} className={styles.ruta}>
-      <div className={styles.card}>
+      <div className={styles.topCard}>
         <img src={image} alt={name} />
         {console.log(id)}
 
@@ -43,9 +44,4 @@ function Card({ id, name, image, publisher }) {
   );
 }
 
-export default Card;
-
-
-
-
-
+export default TopCard;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EpisodeCard from './episodeCard';
 import Player from './player';
+import styles from './style/episodeList.module.css';
 
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
@@ -139,8 +140,8 @@ function EpisodesList({ id }) {
   }
 
   return (
-    <section>
-      <h2>All Episodes</h2>
+    <section className={styles.episodeList}>
+      <h2 className={styles.episodesTitle}>All Episodes</h2>
       <ul>
         {episodes
           .filter((item) => item && item.id) // Filtrar episodios válidos

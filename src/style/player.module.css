@@ -1,0 +1,48 @@
+.player{
+  background-color: black;
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    padding-top: 36px;
+    padding-bottom: 36px;
+    z-index: 10;
+}
+
+.player progress{
+    width: 80%;
+}
+
+
+
+.episodeNavigation{
+    display: flex;
+    flex-direction: row;
+    gap: 29px;
+    justify-content: center;
+}
+
+.episodeNavigation div{
+    width: fit-content;
+    display: flex;
+}
+
+.player span{
+    color: white;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.progressTime{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.progressContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

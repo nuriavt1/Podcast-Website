@@ -1,0 +1,85 @@
+.hero{
+    color: white;
+    gap: 0px;
+}
+
+.hero section{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: black;
+}
+
+.services {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+}
+
+.services div{
+display: flex;
+flex-direction: column;
+gap: 24px;
+padding-left: 40px;
+padding-right: 40px;
+width: 350px;
+}
+
+
+
+.titulo1{
+    color: #FF4B00;
+    font-family: "Inter Tight";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0px;
+    width: fit-content;
+    
+}
+
+.titulo2{
+    color: #FF96D3;
+    font-family: "Inter Tight";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0px;
+    width: fit-content;
+}
+
+.titulo3{
+    color: #FFC410;
+    font-family: "Inter Tight";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0px;
+    width: fit-content;
+}
+
+.services p{
+    color: #FFF;
+font-family: "Inter Tight";
+font-size: 20px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+margin: 0px;
+width: fit-content;
+text-align: start;
+}
+
+
+.ilustration h1{
+
+    color: #FFF;
+font-family: "Inter Tight";
+font-size: 78px;
+font-style: normal;
+font-weight: 500;
+line-height: 84px; /* 107.692% */
+}

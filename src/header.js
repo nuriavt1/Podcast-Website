@@ -75,7 +75,7 @@ function Header() {
         </li>
 
         <li>
-          <Link
+          <Link className='Mylist'
             to={{
               pathname: '/savedContent',
               state: { selectedCategories: ['Fiction'] },
@@ -87,17 +87,15 @@ function Header() {
       </ul>
 
       <Link to="searchContainer">
-        <img src={search} alt="Search" />
-      </Link>
+  <img src={search} alt="Search" style={{ width: '32px', height: '32px' }} />
+</Link>
+
 
       {/* Estilos para los dropdowns */}
       <style jsx>{`
-        header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 20px;
-        }
+
+
+
 
         ul {
           display: flex;
@@ -124,9 +122,11 @@ function Header() {
           margin: 0;
           background-color: rgb(255, 255, 255);
           border-radius: 5px;
+          z-index: 100;
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
           opacity: 0;
           transition: opacity 0.3s ease;
+          
         }
 
         li:hover > ul.dropdown,

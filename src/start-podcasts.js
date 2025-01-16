@@ -81,13 +81,6 @@ function StartPodcasts() {
 
   return (
     <section>
-      <Searcher
-        setPodcasts={setPodcasts} 
-        selectedCategory={selectedCategory} 
-        setSelectedCategory={setSelectedCategory}
-        selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry} 
-      />
       <TopRecentPodcasts />
       <PodcastList 
         podcasts={podcasts} 

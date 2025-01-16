@@ -23,7 +23,7 @@ function removeFromLocalStorage(){
 
     return (
         <section className="savedContent">
-            <h2>My List of Content</h2>
+            <h2 className='title-style'>My List of Content</h2>
             <SavedList />
         </section>
     );

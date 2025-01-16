@@ -2,6 +2,7 @@
   text-align: center;
   font-family: "Inter Tight";
   background: #00DDB5;
+  gap: 0px;
 }
 
 .App-header {
@@ -16,11 +17,14 @@
 }
 
 header {
+  background-color: #00DDB5;
   height: 15vh;
   /*border-bottom: 1px solid #003BFF;*/
   display: flex;
   align-items: center;
  /* position: fixed;*/
+ justify-content: space-between;
+
 }
 
 header img {
@@ -79,6 +83,7 @@ header li {
   border-radius: 4px;
   background: #000;
   width: fit-content;
+
 }
 
 .boton p {
@@ -93,7 +98,7 @@ header li {
 
 .home section{
   background: #000;
-  color: white;
+  color: rgb(255, 255, 255);
   height: fit-content;
 }
 
@@ -174,7 +179,7 @@ text-align: left;
 /**/
 
 section {
-  background-color: #F9F9F9;
+  background-color: #ffffff;
  /* min-height: 90vh;*/
   padding-bottom: 50px;
 }
@@ -298,35 +303,39 @@ form {
   line-height: normal;
 }
 
-/*SEARCH CARD*/
-.SearchCard {
-  gap: 8px;
-  width: 200px;
+
+.MyList {
+  text-decoration: none;
 }
 
-.SearchCard img {
-  width: 99px;
-  height: 99px;
-  border-radius: 4px;
-  object-fit: cover;
-}
 
-.SerachCard h2 {
-  margin: 0px;
-  width: 100%;
-  text-align: left;
+.title-style{
   color: #000;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+font-family: "Inter Tight";
+font-size: 40px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+
+padding-top: 32px;
+padding-bottom: 20PX;
 }
 
-.SearchCard p {
-  margin: 0px;
-  color: #E44C10;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+.savedContent{
+  height: 80vh;
+}
+
+.searcher-page{
+  height: 80vh;
+}
+
+.releatedTitle{
+  color: #000;
+font-family: "Inter Tight";
+font-size: 40px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+padding-top: 32px;
+margin-top: 0px;
 }

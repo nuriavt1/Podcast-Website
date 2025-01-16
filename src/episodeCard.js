@@ -1,4 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import styles from './style/episodeCard.module.css';
+import playBlackIcon from './imatges/icons/playBlackIcon.svg';
+import pauseBlackIcon from './imatges/icons/pauseBlackIcon.svg';
 
 // Componente para mostrar un episodio individual
 function EpisodeCard({
@@ -23,17 +26,22 @@ function EpisodeCard({
   };
 
   return (
-    <div className="episode-item">
-      <h2>{name}</h2>
-      <p>{description || 'No description available'}</p>
-      <p>Duration: {formatDuration(duration_ms)}</p>
-      <p>Release date: {formatDate(release_date)}</p>
-
-      {/* Botón de Play/Pause */}
-      <button onClick={() => onPlayPauseToggle(audio_preview_url)}>
-        {isPlaying ? 'Pause' : 'Play'}
-      </button>
+<div className={styles.episodeCard}>
+  <h2>{name}</h2>
+  <p>{description || 'No description available'}</p>
+  <div>
+    <p>{formatDuration(duration_ms) + ' min - ' + formatDate(release_date)} </p>
+    {/* Contenedor de las imágenes de Play/Pause */}
+    <div onClick={() => onPlayPauseToggle(audio_preview_url)} style={{ cursor: 'pointer' }}>
+      <img 
+        src={isPlaying ? pauseBlackIcon : playBlackIcon}
+        alt={isPlaying ? 'Pausa' : 'Reproducir'}
+        style={{ width: '32px', height: '32px' }} // Ajusta el tamaño de la imagen
+      />
     </div>
+  </div>
+</div>
+
   );
 }
 

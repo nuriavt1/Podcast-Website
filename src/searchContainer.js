@@ -6,6 +6,7 @@ import PodcastsCategories from './podcastsCategories';
 import TopRecentPodcasts from './topRecentPodcasts';
 
 
+
 // Función para obtener el token de Spotify
 async function getToken() {
   const client_id = "d21f9fa9e9834547a686c4595b539595";
@@ -81,7 +82,7 @@ function SearchContainer() {
 
 
   return (
-    <section>
+    <section className="searcher-page">
       
       <Searcher
         setPodcasts={setPodcasts}
