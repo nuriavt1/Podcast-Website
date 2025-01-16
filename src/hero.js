@@ -13,12 +13,13 @@ function Hero() {
   return (
 
     <div className={styles.hero}>
-      <div class="hero">
 
+      <div class="hero">
+{/* Hero section with main image and text */}
         <div className={styles.home}>
           <h1>Press Play. Chill Out.</h1>
           <h2>The best podcasts, all in one spot. Ready when you are.</h2>
-
+{/* Button to navigate to the topics-selector page */}
           <Link to="/topics-selector">
             <div class="boton" ><p>Let’s listen</p>
               <img src={arrowRight}></img>
@@ -27,15 +28,17 @@ function Hero() {
 
 
         </div>
-
+ {/* Hero image */}
         <img src={heroImg}></img>
 
       </div>
+ {/* Content section showcasing available types of content */}
 
       <section>
         <h3>Our content</h3>
         <p>Explore a rich collection of podcasts and audiobooks, handpicked to suit every mood and moment.</p>
         <div>
+           {/* Podcasts content box */}
           <div className='content-type'>
             <h3>Podcasts</h3>
             <p>+5M Podcasts available</p>
@@ -43,6 +46,7 @@ function Hero() {
               <p>Listen Now</p>
             </div>
           </div>
+            {/* Audiobooks content box */}
           <div className='content-type'>
             <h3>Audiobooks</h3>
             <p>+300k Audiobooks avaliable</p>
@@ -78,18 +82,26 @@ function Hero() {
        {/* <h3>New Podcasts</h3>
         <p>Dive into a world of thought-provoking conversations, trending topics, and expert opinions.</p>*/}
       </section>
-      <section>
+      <section className={styles.categoriees}>
       <h3>All Topics</h3>
-      <div>
+      <div className={styles.cat}>
+
+        <section>
         <div><p>Comedy</p></div>
         <div><p>Science & Tech</p></div>
         <div><p>Kids</p></div>
-        <div><p>Mistery</p></div>
+        </section>
+       <section>
+       <div><p>Mistery</p></div>
         <div><p>Art & Culture</p></div>
         <div><p>History</p></div>
-        <div><p>Sport</p></div>
+       </section>
+      <section>
+      <div><p>Sport</p></div>
         <div><p>Politics</p></div>
         <div><p>Health</p></div>
+      </section>
+      
       </div>
       
       </section>

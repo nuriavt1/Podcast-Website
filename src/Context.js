@@ -1,42 +1,43 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Crear el contexto
+// Creating the context to manage saved podcasts
 const SavedPodcastsContext = createContext();
 
-// Crear el provider
+// Creating the ContextProvider component that will wrap around the app
 export const ContextProvider = ({ children }) => {
-  // Cargar el estado inicial desde localStorage
+  // Load the initial state from localStorage if available
   const [savedPodcasts, setSavedPodcasts] = useState(() => {
     const saved = localStorage.getItem('savedPodcastsIds');
-    return saved ? JSON.parse(saved) : [];  // Si hay datos en localStorage, usarlos; si no, iniciar con un array vacío.
+    return saved ? JSON.parse(saved) : [];  // If data exists in localStorage, use it; otherwise, initialize with an empty array
   });
 
-  // Función para agregar un podcast al estado
+  // Function to add a podcast to the saved list
   const addPodcast = (id) => {
     setSavedPodcasts((prevState) => {
-      const updatedState = [...prevState, id];
-      localStorage.setItem('savedPodcastsIds', JSON.stringify(updatedState));  // Guardar en localStorage
+      const updatedState = [...prevState, id];  // Add the new podcast ID to the saved podcasts array
+      localStorage.setItem('savedPodcastsIds', JSON.stringify(updatedState));  // Save the updated list to localStorage
       return updatedState;
     });
   };
 
-  // Función para eliminar un podcast del estado
+  // Function to remove a podcast from the saved list
   const removePodcast = (id) => {
     setSavedPodcasts((prevState) => {
-      const updatedState = prevState.filter((podcastId) => podcastId !== id);
-      localStorage.setItem('savedPodcastsIds', JSON.stringify(updatedState));  // Guardar en localStorage
+      const updatedState = prevState.filter((podcastId) => podcastId !== id);  // Remove the podcast ID from the array
+      localStorage.setItem('savedPodcastsIds', JSON.stringify(updatedState));  // Save the updated list to localStorage
       return updatedState;
     });
   };
 
   return (
+    // Providing the savedPodcasts state and functions to the rest of the app
     <SavedPodcastsContext.Provider value={{ savedPodcasts, addPodcast, removePodcast }}>
-      {children}
+      {children} {/* Render the child components */}
     </SavedPodcastsContext.Provider>
   );
 };
 
-// Crear el hook para acceder al contexto
+// Custom hook to access the saved podcasts context
 export const useSavedPodcasts = () => {
-  return useContext(SavedPodcastsContext);
+  return useContext(SavedPodcastsContext); // Access the savedPodcasts context using useContext hook
 };

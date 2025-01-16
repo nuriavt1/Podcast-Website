@@ -1,3 +1,4 @@
+// Importing necessary styles, components, and libraries
 import './App.css';
 import logo from './nextCastLogo.svg';
 import PodcastList from './podcastList';
@@ -7,29 +8,29 @@ import TopicsSelector from './topicsSelector';
 import PodcastDetail from './podcastDetail';
 import StartPodcast from './start-podcasts';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import SavedContent from './savedContent';
+import SavedContent from './savedContent'; 
 import SearchContainer from './searchContainer';
-import { ContextProvider } from './Context'; // Asegúrate de importar el ContextProvider
-
+import { ContextProvider } from './Context';
 function App() {
 
   return (
     <div className="App">
-      {/* Envolvemos la aplicación con ContextProvider */}
+      {/* Wrapping the application in the ContextProvider to manage global state */}
       <ContextProvider>
+        {/* Router component provides routing capabilities between different pages */}
         <Router>
           <Header />
   
           <main>
-            {/*  <Hero />
+            {/* <Hero />
             <TopicsSelector />
-            <PodcastList />*/}
+            <PodcastList /> */}
           </main>
   
+          {/* Different routes for navigating through the app */}
           <Routes>
             <Route path="/" element={<Hero />} />
             <Route path="/podcasts" element={<PodcastList />} />
-            {/*<Route path="/audiobooks" element={<AudioBooksList />} />*/}
             <Route path="/topics-selector" element={<TopicsSelector />} />
             <Route path="/podcast-detail/:id" element={<PodcastDetail />} />
             <Route path="/start-podcasts" element={<StartPodcast />} />
@@ -39,6 +40,7 @@ function App() {
         </Router>
       </ContextProvider>
 
+      {/* Footer section displaying copyright info */}
       <footer>
         <p>© 2024 Next-Cast All rights reserved.</p>
       </footer>
@@ -46,4 +48,5 @@ function App() {
   );
 }
 
+// Exporting the App component for use in other parts of the application
 export default App;

@@ -1,97 +1,123 @@
 import React, { useState } from 'react';
-import logo from './nextCastLogo.svg';
-import { Link, useNavigate } from 'react-router-dom';
-import search from './imatges/icons/search.svg';
+import logo from './nextCastLogo.svg'; // Importing logo image
+import { Link, useNavigate } from 'react-router-dom'; // React Router for navigation
+
+import search from './imatges/icons/search.svg'; // Importing search icon
 
 function Header() {
+   // States for controlling dropdown visibility
+
   const [showPodcastsDropdown, setShowPodcastsDropdown] = useState(false);
   const [showAudiobooksDropdown, setShowAudiobooksDropdown] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // React Router's navigate function for navigation
 
+ // Toggles the visibility of the Podcasts dropdown
   const togglePodcastsDropdown = () => {
-    setShowPodcastsDropdown(!showPodcastsDropdown);
-    setShowAudiobooksDropdown(false); // Cerrar Audiobooks dropdown si se abre Podcasts
-  };
+    setShowPodcastsDropdown(!showPodcastsDropdown); // Toggle Podcasts dropdown visibility
 
+    setShowAudiobooksDropdown(false);  // Close Podcasts dropdown if Audiobooks is opened
+
+
+  };
+// Toggles the visibility of the Audiobooks dropdown
   const toggleAudiobooksDropdown = () => {
     setShowAudiobooksDropdown(!showAudiobooksDropdown);
-    setShowPodcastsDropdown(false); // Cerrar Podcasts dropdown si se abre Audiobooks
+    setShowPodcastsDropdown(false); // Close Podcasts dropdown if Audiobooks is opened
+
   };
+
+  // Handles category selection, stores in localStorage and navigates to the podcasts page
 
   const handleCategorySelect = (category) => {
     localStorage.setItem('selectedCategories', JSON.stringify([category]));
-    navigate('/start-podcasts', { state: { selectedCategories: [category] } });
+   // Store selected category
+   navigate('/start-podcasts', { state: { selectedCategories: [category] } });  // Navigate with the category state
   };
 
   return (
-    <header>
+    <header>  {/* Logo that redirects to the home page */}
       <Link to="/">
         <img src={logo} alt="logo Next-Cast" />
       </Link>
 
+  {/* Main navigation menu */}
       <ul>
+           {/* Podcasts category menu */}
+
         <li
           onClick={togglePodcastsDropdown}
-          onMouseEnter={() => setShowPodcastsDropdown(true)} // Mostrar al hacer hover
-          onMouseLeave={() => setShowPodcastsDropdown(false)} // Ocultar cuando se deja de hacer hover
+          onMouseEnter={() => setShowPodcastsDropdown(true)} // Show on hover
+          onMouseLeave={() => setShowPodcastsDropdown(false)} // Hide on hover leave
+
         >
           Podcasts
+           {/* Show the dropdown if Podcasts is selected */}
           {showPodcastsDropdown && (
             <ul className="dropdown">
+              {/* List of podcast categories */}
               {['Comedy', 'Mystery', 'Sport', 'Science & Tech', 'History', 'Politics', 'Kids', 'Art & Culture', 'Health'].map((category) => (
                 <li key={category}>
                   <Link
-                    to="start-podcasts"
-                    onClick={() => handleCategorySelect(category)}
+                    to="start-podcasts" // Navigate to the start-podcasts page when clicked
+                    onClick={() => handleCategorySelect(category)} // Select the category and store it
                   >
-                    {category}
+                    {category} {/* Display category name */}
                   </Link>
                 </li>
               ))}
             </ul>
           )}
         </li>
-
+{/* Audiobooks category menu */}
         <li
           onClick={toggleAudiobooksDropdown}
-          onMouseEnter={() => setShowAudiobooksDropdown(true)} // Mostrar al hacer hover
-          onMouseLeave={() => setShowAudiobooksDropdown(false)} // Ocultar cuando se deja de hacer hover
+          onMouseEnter={() => setShowAudiobooksDropdown(true)}  // Show on hover
+          onMouseLeave={() => setShowAudiobooksDropdown(false)}  // Hide on hover leave
         >
           AudioBooks
+           {/* Show the dropdown if Audiobooks is selected */}
           {showAudiobooksDropdown && (
             <ul className="dropdown">
+              {/* List of audiobook categories */}
               {['Fiction', 'Mystery'].map((category) => (
                 <li key={category}>
                   <Link
                     to="start-podcasts"
+                    // Navigate to the start-podcasts page when clicked
+
                     onClick={() => handleCategorySelect(category)}
+                    // Select the category and store it
+
                   >
-                    {category}
+                    {category}  {/* Display category name */}
                   </Link>
                 </li>
               ))}
             </ul>
           )}
         </li>
-
+{/* My List link */}
         <li>
           <Link className='Mylist'
             to={{
-              pathname: '/savedContent',
-              state: { selectedCategories: ['Fiction'] },
+              pathname: '/savedContent', // Navigate to savedContent page
+
+              state: { selectedCategories: ['Fiction'] }, // Pass Fiction category to the state
+
             }}
           >
-            My List
+            My List {/* Link text */}
           </Link>
         </li>
       </ul>
 
       <Link to="searchContainer">
-  <img src={search} alt="Search" style={{ width: '32px', height: '32px' }} />
+  <img src={search} alt="Search" style={{ width: '32px', height: '32px' }} />  {/* Display search icon */}
+
 </Link>
 
 
-      {/* Estilos para los dropdowns */}
+ {/* Styles for the dropdowns and header layout */}
       <style jsx>{`
 
 

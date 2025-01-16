@@ -3,56 +3,69 @@ import EpisodeCard from './episodeCard';
 import Player from './player';
 import styles from './style/episodeList.module.css';
 
+// Spotify API client credentials
 const client_id = 'd21f9fa9e9834547a686c4595b539595';
 const client_secret = '224cbbce3d5943cba4229f4d40b172ad';
 
-// Función para obtener el token de Spotify
+// Function to fetch the Spotify API token for authentication
 async function getToken() {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     body: new URLSearchParams({
-      grant_type: 'client_credentials',
+      grant_type: 'client_credentials', // Requesting access via client credentials
+
     }),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${btoa(`${client_id}:${client_secret}`)}`,
+      Authorization: `Basic ${btoa(`${client_id}:${client_secret}`)}`, // Base64 encode client_id and client_secret
+
     },
   });
 
   if (!response.ok) {
-    throw new Error('Error al obtener el token');
+    throw new Error('Error al obtener el token'); // Error if token fetch fails
+
   }
 
   const data = await response.json();
-  return data.access_token;
+  return data.access_token; // Return the access token for API calls
+
 }
 
-// Función para guardar el progreso en localStorage
+// Function to save playback progress in localStorage
 const saveProgress = (episodeId, currentTime) => {
   const savedProgress = JSON.parse(localStorage.getItem('audioProgress')) || {};
-  savedProgress[episodeId] = currentTime;
-  localStorage.setItem('audioProgress', JSON.stringify(savedProgress));
+  savedProgress[episodeId] = currentTime; // Store the progress for the episode
+  localStorage.setItem('audioProgress', JSON.stringify(savedProgress)); // Save to localStorage
+
 };
 
-// Función para obtener el progreso desde localStorage
+// Function to retrieve saved progress from localStorage
 const getProgress = (episodeId) => {
   const savedProgress = JSON.parse(localStorage.getItem('audioProgress')) || {};
-  return savedProgress[episodeId] || 0; // Devuelve 0 si no se encuentra progreso
+  return savedProgress[episodeId] || 0; // Return the saved progress or 0 if none found
+
 };
 
 function EpisodesList({ id }) {
-  const [episodes, setEpisodes] = useState([]);
-  const [error, setError] = useState(null);
+  const [episodes, setEpisodes] = useState([]); // State to store the list of episodes
 
-  // Estado para el reproductor global
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentAudioUrl, setCurrentAudioUrl] = useState(null);
+  const [error, setError] = useState(null); // State to manage errors during fetch
+
+
+  // States for the audio player and playback
+  const [isPlaying, setIsPlaying] = useState(false); // Whether the episode is playing
+
+  const [currentAudioUrl, setCurrentAudioUrl] = useState(null); // URL of the current playing episode
   const [currentTime, setCurrentTime] = useState(0); // Mantener el tiempo actual
-  const [currentIndex, setCurrentIndex] = useState(null); // Mantener el índice del episodio
+  const [currentIndex, setCurrentIndex] = useState(null); // Index of the current episode
+
+
 
   useEffect(() => {
     if (!id) {
-      setError('No se proporcionó el ID del podcast');
+      setError('No se proporcionó el ID del podcast'); // Handle missing podcast ID
+
       return;
     }
 
@@ -60,91 +73,107 @@ function EpisodesList({ id }) {
 
     async function fetchPodcasts() {
       try {
-        const token = await getToken();
+        const token = await getToken(); // Fetch the token for Spotify API access
         const response = await fetch(`https://api.spotify.com/v1/shows/${id}/episodes`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Pass the token in the request header
           },
         });
 
         if (!response.ok) {
-          throw new Error('Error al obtener los datos de la API de Spotify');
+          throw new Error('Error al obtener los datos de la API de Spotify'); // Handle API fetch error
+
         }
 
         const data = await response.json();
         if (isMounted) {
-          setEpisodes(data.items);
+          setEpisodes(data.items); // Set the list of episodes if the component is still mounted
+
         }
       } catch (err) {
         if (isMounted) {
-          setError(err.message);
+          setError(err.message); // Set error message if fetch fails
         }
       }
     }
 
-    fetchPodcasts();
+    fetchPodcasts(); // Fetch the podcast episodes when the component is mounted
+
 
     return () => {
-      isMounted = false;
-    };
-  }, [id]);
+      isMounted = false; // Clean up to avoid setting state on an unmounted component
 
+    };
+  }, [id]); // Dependency on `id`, refetch when the ID changes
+
+
+  // Handle play/pause toggle
   const handlePlayPauseToggle = (audioUrl, index) => {
     if (audioUrl === currentAudioUrl) {
-      // Si el audio actual es el mismo, alternar entre play/pause
-      setIsPlaying(!isPlaying);
+
+      setIsPlaying(!isPlaying);// Toggle play/pause if the same episode is clicked
     } else {
-      // Si el audio es diferente, reproducir el nuevo audio
-      setCurrentAudioUrl(audioUrl);
-      setIsPlaying(true);
-      setCurrentIndex(index); // Establecer el índice del episodio
-      const progress = getProgress(episodes[index].id);
-      setCurrentTime(progress); // Recuperamos el progreso guardado para el episodio
+
+      setCurrentAudioUrl(audioUrl); // Play new episode
+      setIsPlaying(true); // Set the player to playing
+      setCurrentIndex(index); // Update the current episode index
+      const progress = getProgress(episodes[index].id); // Retrieve saved progress for the new episode
+      setCurrentTime(progress); // Set the current playback time
+
     }
   };
-
+  // Update current playback time during the episode
   const handleTimeUpdate = (currentTime) => {
-    setCurrentTime(currentTime); // Actualizamos el tiempo globalmente
+    setCurrentTime(currentTime); // Update the playback time
     if (currentIndex !== null && episodes[currentIndex]) {
-      saveProgress(episodes[currentIndex].id, currentTime); // Guardamos el progreso del episodio
+      saveProgress(episodes[currentIndex].id, currentTime);
+      // Save the progress for the current episode
+
     }
   };
 
+  // Play the next episode in the list
   const playNextEpisode = () => {
     if (currentIndex !== null && currentIndex < episodes.length - 1) {
       const nextEpisode = episodes[currentIndex + 1];
       setCurrentAudioUrl(nextEpisode.audio_preview_url);
-      setIsPlaying(true);
-      setCurrentIndex(currentIndex + 1);
-      setCurrentTime(getProgress(nextEpisode.id)); // Recuperamos el progreso del siguiente episodio
+      setIsPlaying(true); // Play the next episode
+      setCurrentIndex(currentIndex + 1); // Update the current index
+      setCurrentTime(getProgress(nextEpisode.id)); // Load saved progress for the next episode
     }
   };
 
+  // Play the previous episode in the list
   const playPreviousEpisode = () => {
     if (currentIndex !== null && currentIndex > 0) {
       const previousEpisode = episodes[currentIndex - 1];
-      setCurrentAudioUrl(previousEpisode.audio_preview_url);
-      setIsPlaying(true);
-      setCurrentIndex(currentIndex - 1);
-      setCurrentTime(getProgress(previousEpisode.id)); // Recuperamos el progreso del episodio anterior
+      setCurrentAudioUrl(previousEpisode.audio_preview_url); // Set the previous episode URL
+      setIsPlaying(true);  // Play the previous episode
+      setCurrentIndex(currentIndex - 1);  // Update the current index
+      setCurrentTime(getProgress(previousEpisode.id));  // Load saved progress for the previous episode
+
     }
   };
 
+  // Error handling if the API fetch fails
   if (error) {
     return <p>Error: {error}</p>;
   }
 
+  // Display message if no episodes are available
   if (episodes.length === 0) {
-    return <p>No hay episodios disponibles aún.</p>;
+    return <p>No episodes available yet.</p>;
   }
+
 
   return (
     <section className={styles.episodeList}>
       <h2 className={styles.episodesTitle}>All Episodes</h2>
       <ul>
+        {/* Filter out invalid episodes and map over valid episodes to render */}
         {episodes
-          .filter((item) => item && item.id) // Filtrar episodios válidos
+          .filter((item) => item && item.id) // Ensure each episode has a valid ID
           .map((item, index) => (
             <EpisodeCard
               key={item.id}
@@ -153,21 +182,27 @@ function EpisodesList({ id }) {
               description={item.description}
               duration_ms={item.duration_ms}
               release_date={item.release_date}
-              audio_preview_url={item.audio_preview_url}
-              isPlaying={isPlaying && currentAudioUrl === item.audio_preview_url} // Sincronizamos el play/pause
-              onPlayPauseToggle={() => handlePlayPauseToggle(item.audio_preview_url, index)} // Pasamos el índice al reproducir
+              audio_preview_url={item.audio_preview_url} // Sync play/pause state
+              isPlaying={isPlaying && currentAudioUrl === item.audio_preview_url}
+              onPlayPauseToggle={() => handlePlayPauseToggle(item.audio_preview_url, index)} // Pass index to toggle play/pause
+
             />
           ))}
       </ul>
-  
+
+      {/* Display the player if there's an audio URL to play */}
       {currentAudioUrl && (
         <Player
           audioPreviewUrl={currentAudioUrl}
           isPlaying={isPlaying}
-          onPlayPauseToggle={() => setIsPlaying(!isPlaying)} // Reproducir/pausar en el reproductor global
-          onTimeUpdate={handleTimeUpdate} // Actualizar el progreso
-          playNextEpisode={playNextEpisode} // Función para el siguiente episodio
-          playPreviousEpisode={playPreviousEpisode} // Función para el episodio anterior
+          onPlayPauseToggle={() => setIsPlaying(!isPlaying)} // Toggle play/pause in the global player
+
+          onTimeUpdate={handleTimeUpdate} // Update the playback time
+
+          playNextEpisode={playNextEpisode} // Function to play next episode
+
+          playPreviousEpisode={playPreviousEpisode} // Function to play previous episode
+
         />
       )}
     </section>
